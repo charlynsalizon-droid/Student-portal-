@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#176b55">
+  <title>CampusHub | Student Portal</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
+    :root{--green:#176b55;--green2:#21866a;--mint:#eaf5ef;--ink:#1d2b27;--muted:#77847e;--line:#e8eeea;--bg:#f6f8f6;--white:#fff;--gold:#f2b84b;--shadow:0 10px 30px rgba(29,62,47,.06)}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif}
+    button{font:inherit;cursor:pointer}.app{display:flex;min-height:100vh}
+    .sidebar{width:250px;background:#fff;border-right:1px solid var(--line);padding:27px 18px;display:flex;flex-direction:column;position:fixed;inset:0 auto 0 0;z-index:5}
+    .brand{display:flex;align-items:center;gap:11px;padding:0 12px 35px;font:800 20px Manrope,sans-serif;letter-spacing:-.7px}
+    .brand-mark{height:37px;width:37px;border-radius:12px;background:var(--green);color:#fff;display:grid;place-items:center;font-size:19px}
+    .nav-label{font-size:10px;letter-spacing:1.5px;font-weight:700;color:#a0aaa4;padding:0 13px;margin:8px 0 12px}
+    .nav{display:grid;gap:6px}.nav button{border:0;background:transparent;color:#718079;text-align:left;padding:12px 14px;border-radius:11px;display:flex;gap:13px;align-items:center;font-weight:600;font-size:13px}
+    .nav button .ico{width:18px;text-align:center;font-size:16px}.nav button.active,.nav button:hover{background:var(--mint);color:var(--green)}
+    .sidebar-bottom{margin-top:auto;background:#f3f8f4;border-radius:15px;padding:16px}.help-icon{font-size:22px}.sidebar-bottom strong{display:block;font-size:12px;margin:8px 0 4px}.sidebar-bottom p{font-size:11px;color:var(--muted);line-height:1.5;margin:0 0 12px}.help-btn{border:0;background:var(--green);color:white;border-radius:8px;padding:8px 12px;font-size:11px;font-weight:700}
+    .main{margin-left:250px;width:calc(100% - 250px);padding:0 38px 40px}
+    .topbar{height:82px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);margin-bottom:30px}
+    .crumb{font-size:12px;color:var(--muted)}.crumb b{color:var(--ink)}
+    .top-actions{display:flex;align-items:center;gap:18px}.search{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 13px;width:220px;display:flex;gap:8px;color:#89958e}.search input{border:0;outline:0;width:100%;font:12px 'DM Sans';color:var(--ink)}
+    .bell{border:0;background:#fff;width:38px;height:38px;border-radius:11px;box-shadow:var(--shadow);position:relative}.bell:after{content:"";position:absolute;right:9px;top:8px;width:6px;height:6px;background:#e66b61;border-radius:50%}
+    .user-mini{display:flex;align-items:center;gap:9px}.avatar{height:36px;width:36px;border-radius:50%;background:#dcefe4;color:var(--green);display:grid;place-items:center;font-weight:800;font-size:12px}.user-mini strong{font-size:12px;display:block}.user-mini small{font-size:10px;color:var(--muted)}
+    .welcome{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:25px}.eyebrow{font-size:11px;color:var(--green);font-weight:700;letter-spacing:1.3px;text-transform:uppercase}.welcome h1{font:800 28px Manrope;margin:7px 0 5px;letter-spacing:-1px}.welcome p{margin:0;color:var(--muted);font-size:13px}.date-chip{background:#fff;border:1px solid var(--line);padding:10px 14px;border-radius:10px;color:#68766f;font-size:11px;font-weight:600}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}.stat,.panel{background:#fff;border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow)}.stat{padding:18px}.stat-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:11px;font-weight:600}.stat-icon{height:32px;width:32px;border-radius:10px;background:var(--mint);display:grid;place-items:center;color:var(--green);font-size:15px}.stat h2{font:800 25px Manrope;margin:13px 0 4px}.stat small{font-size:10px;color:#8b9790}.positive{color:var(--green)!important}
+    .content-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,.9fr);gap:20px}.left-col,.right-col{display:grid;gap:20px;align-content:start}.panel{padding:20px}.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:17px}.panel-head h3{font:700 15px Manrope;margin:0}.panel-head button,.view-all{border:0;background:transparent;color:var(--green);font-size:11px;font-weight:700}
+    .schedule-list{display:grid;gap:10px}.class-row{display:grid;grid-template-columns:65px 4px 1fr auto;align-items:center;gap:13px;padding:11px 10px;border:1px solid #edf1ee;border-radius:11px}.class-time{font-size:11px;color:#65736c;font-weight:700}.class-bar{height:38px;border-radius:5px;background:#70b79a}.class-row:nth-child(2) .class-bar{background:#e9b85b}.class-row:nth-child(3) .class-bar{background:#8b9fd4}.class-row:nth-child(4) .class-bar{background:#d58b9a}.class-info strong{font-size:12px;display:block}.class-info small{font-size:10px;color:var(--muted)}.room{font-size:10px;color:#7d8982;background:#f5f7f5;padding:6px 8px;border-radius:7px}
+    .grade-list{display:grid;gap:16px}.grade-item{display:grid;grid-template-columns:1fr auto;gap:7px}.grade-item strong{font-size:11px}.grade-item span{font-size:11px;font-weight:700;color:var(--green)}.track{height:6px;background:#edf2ee;border-radius:20px;grid-column:1/-1;overflow:hidden}.fill{height:100%;background:var(--green);border-radius:20px}.grade-foot{font-size:10px;color:var(--muted);margin-top:2px}
+    .announcement{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #eef1ef}.announcement:last-child{border:0;padding-bottom:0}.ann-icon{height:34px;width:34px;border-radius:10px;background:#fff4df;display:grid;place-items:center;flex-shrink:0}.announcement:nth-child(3) .ann-icon{background:#eaf2ff}.announcement:nth-child(4) .ann-icon{background:#fcecef}.ann-text strong{font-size:11px;display:block;margin-bottom:4px}.ann-text p{font-size:10px;color:var(--muted);line-height:1.5;margin:0}.ann-text small{font-size:9px;color:#9aa49e;display:block;margin-top:5px}
+    .profile-card{background:linear-gradient(135deg,#176b55,#2d9272);color:#fff;border-radius:15px;padding:20px;position:relative;overflow:hidden}.profile-card:after{content:"";position:absolute;width:150px;height:150px;border:1px solid #ffffff22;border-radius:50%;right:-45px;top:-65px;box-shadow:0 0 0 20px #ffffff0a,0 0 0 40px #ffffff08}.profile-top{display:flex;align-items:center;gap:12px;position:relative;z-index:1}.profile-avatar{width:48px;height:48px;border-radius:50%;background:#d9eee3;color:var(--green);display:grid;place-items:center;font-weight:800}.profile-card h3{font:700 14px Manrope;margin:0 0 3px}.profile-card small{font-size:10px;color:#d1e9dd}.profile-details{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:20px;position:relative;z-index:1}.profile-details span{display:block;color:#c5e2d4;font-size:9px;margin-bottom:4px}.profile-details strong{font-size:11px}
+    .quick-links{display:grid;grid-template-columns:1fr 1fr;gap:9px}.quick-links button{border:1px solid var(--line);background:#fff;border-radius:10px;padding:12px;text-align:left;color:var(--ink);font-size:10px;font-weight:700}.quick-links button span{display:block;font-size:17px;margin-bottom:8px}
+    .section-view{display:none}.section-view.active{display:block}.dashboard-view.active{display:block}.empty-note{color:var(--muted);font-size:13px;line-height:1.6}
+    .mobile-menu{display:none}
+    @media(max-width:1050px){.main{padding:0 22px 30px}.stats{grid-template-columns:repeat(2,1fr)}.content-grid{grid-template-columns:1fr}.right-col{grid-template-columns:1fr 1fr}}
+    @media(max-width:700px){.sidebar{transform:translateX(-100%);transition:.25s}.sidebar.open{transform:translateX(0);box-shadow:0 0 0 100vmax #14251c55}.main{margin-left:0;width:100%;padding:0 15px 25px}.topbar{height:68px;margin-bottom:22px}.mobile-menu{display:inline-grid;place-items:center;border:0;background:#fff;border-radius:9px;width:36px;height:36px;margin-right:10px}.crumb{display:flex;align-items:center}.search{width:38px;padding:10px}.search input{display:none}.top-actions{gap:8px}.user-mini>div:last-child{display:none}.welcome{align-items:flex-start;gap:12px;flex-direction:column}.welcome h1{font-size:24px}.stats{gap:10px}.stat{padding:14px}.stat h2{font-size:22px}.right-col{grid-template-columns:1fr}.panel{padding:16px}.class-row{grid-template-columns:55px 4px 1fr}.room{display:none}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><div class="brand-mark">✦</div> CampusHub</div>
+    <div class="nav-label">MAIN MENU</div>
+    <nav class="nav" aria-label="Main navigation">
+      <button class="active" data-page="dashboard"><span class="ico">▦</span>Dashboard</button>
+      <button data-page="schedule"><span class="ico">▣</span>Class Schedule</button>
+      <button data-page="grades"><span class="ico">▤</span>My Grades</button>
+      <button data-page="announcements"><span class="ico">◉</span>Announcements</button>
+      <button data-page="profile"><span class="ico">♙</span>Student Profile</button>
+    </nav>
+    <div class="sidebar-bottom"><div class="help-icon">💡</div><strong>Need a little help?</strong><p>Find answers to common student questions and portal guides.</p><button class="help-btn" id="helpBtn">Visit Help Center ↗</button></div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <div class="crumb"><button class="mobile-menu" id="menuBtn" aria-label="Open menu">☰</button>Pages&nbsp; / &nbsp;<b id="crumbPage">Dashboard</b></div>
+      <div class="top-actions">
+        <label class="search">⌕ <input id="searchInput" type="search" placeholder="Search portal..."></label>
+        <button class="bell" id="noticeBtn" aria-label="Notifications">♧</button>
+        <div class="user-mini"><div class="avatar">AM</div><div><strong>Alex Morgan</strong><small>Student account</small></div></div>
+      </div>
+    </header>
+    <section class="dashboard-view section-view active" id="dashboard">
+      <div class="welcome"><div><div class="eyebrow">WEDNESDAY, NOVEMBER 25, 2026</div><h1>Good afternoon, Alex! 👋</h1><p>Here's what's happening with your studies today.</p></div><div class="date-chip">📅 &nbsp; Academic Year 2026–2027</div></div>
+      <div class="stats">
+        <article class="stat"><div class="stat-top">Enrolled Subjects <span class="stat-icon">▣</span></div><h2>6</h2><small>For this semester</small></article>
+        <article class="stat"><div class="stat-top">Current GPA <span class="stat-icon">✦</span></div><h2>1.75</h2><small class="positive">↑ Good academic standing</small></article>
+        <article class="stat"><div class="stat-top">Attendance <span class="stat-icon">◷</span></div><h2>96%</h2><small>Across all subjects</small></article>
+        <article class="stat"><div class="stat-top">Upcoming Tasks <span class="stat-icon">☷</span></div><h2>3</h2><small>Due this week</small></article>
+      </div>
+      <div class="content-grid">
+        <div class="left-col">
+          <section class="panel"><div class="panel-head"><h3>Today's Class Schedule</h3><button data-goto="schedule">View full schedule →</button></div><div class="schedule-list">
+            <div class="class-row"><div class="class-time">08:00 AM</div><div class="class-bar"></div><div class="class-info"><strong>Introduction to Computing</strong><small>Prof. Maria Santos · Lecture</small></div><span class="room">Room 204</span></div>
+            <div class="class-row"><div class="class-time">10:00 AM</div><div class="class-bar"></div><div class="class-info"><strong>Mathematics in the Modern World</strong><small>Prof. Daniel Reyes · Lecture</small></div><span class="room">Room 301</span></div>
+            <div class="class-row"><div class="class-time">01:00 PM</div><div class="class-bar"></div><div class="class-info"><strong>Human-Computer Interaction</strong><small>Prof. Angela Cruz · Laboratory</small></div><span class="room">Computer Lab 2</span></div>
+            <div class="class-row"><div class="class-time">03:00 PM</div><div class="class-bar"></div><div class="class-info"><strong>Purposive Communication</strong><small>Prof. James Flores · Lecture</small></div><span class="room">Room 105</span></div>
+          </div></section>
+          <section class="panel"><div class="panel-head"><h3>Academic Performance</h3><button data-goto="grades">See all grades →</button></div><div class="grade-list">
+            <div class="grade-item"><strong>Introduction to Computing</strong><span>1.50</span><div class="track"><div class="fill" style="width:92%"></div></div></div>
+            <div class="grade-item"><strong>Mathematics in the Modern World</strong><span>1.75</span><div class="track"><div class="fill" style="width:87%"></div></div></div>
+            <div class="grade-item"><strong>Human-Computer Interaction</strong><span>1.50</span><div class="track"><div class="fill" style="width:94%"></div></div></div>
+          </div><div class="grade-foot">Sample grades for demonstration purposes.</div></section>
+        </div>
+        <div class="right-col">
+          <section class="profile-card"><div class="profile-top"><div class="profile-avatar">AM</div><div><h3>Alex Morgan</h3><small>BS Information Technology · 2nd Year</small></div></div><div class="profile-details"><div><span>STUDENT ID</span><strong>2026-10428</strong></div><div><span>SECTION</span><strong>BSIT-2A</strong></div><div><span>SEMESTER</span><strong>1st Semester</strong></div><div><span>STATUS</span><strong>Regular</strong></div></div></section>
+          <section class="panel"><div class="panel-head"><h3>Latest Announcements</h3><button data-goto="announcements">View all →</button></div>
+            <div class="announcement"><div class="ann-icon">📢</div><div class="ann-text"><strong>Midterm Examination Schedule</strong><p>Check the updated examination timetable on the student portal.</p><small>November 24, 2026</small></div></div>
+            <div class="announcement"><div class="ann-icon">📚</div><div class="ann-text"><strong>Library Week Activities</strong><p>Join the activities and workshops happening this week.</p><small>November 22, 2026</small></div></div>
+            <div class="announcement"><div class="ann-icon">🎓</div><div class="ann-text"><strong>Scholarship Application</strong><p>Applications for the next term are now open.</p><small>November 20, 2026</small></div></div>
+          </section>
+          <section class="panel"><div class="panel-head"><h3>Quick Access</h3></div><div class="quick-links"><button data-goto="schedule"><span>🗓️</span>Class Schedule</button><button data-goto="grades"><span>📊</span>View Grades</button><button data-goto="announcements"><span>📣</span>Notices</button><button data-goto="profile"><span>👤</span>My Profile</button></div></section>
+        </div>
+      </div>
+    </section>
+    <section class="section-view" id="schedule"><div class="welcome"><div><div class="eyebrow">YOUR WEEK AT A GLANCE</div><h1>Class Schedule</h1><p>Keep track of your classes and learning sessions.</p></div></div><div class="panel"><div class="panel-head"><h3>Wednesday · 1st Semester</h3><span class="date-chip">AY 2026–2027</span></div><div class="schedule-list">
+      <div class="class-row"><div class="class-time">08:00 AM</div><div class="class-bar"></div><div class="class-info"><strong>Introduction to Computing</strong><small>Prof. Maria Santos · Lecture</small></div><span class="room">Room 204</span></div><div class="class-row"><div class="class-time">10:00 AM</div><div class="class-bar"></div><div class="class-info"><strong>Mathematics in the Modern World</strong><small>Prof. Daniel Reyes · Lecture</small></div><span class="room">Room 301</span></div><div class="class-row"><div class="class-time">01:00 PM</div><div class="class-bar"></div><div class="class-info"><strong>Human-Computer Interaction</strong><small>Prof. Angela Cruz · Laboratory</small></div><span class="room">Computer Lab 2</span></div><div class="class-row"><div class="class-time">03:00 PM</div><div class="class-bar"></div><div class="class-info"><strong>Purposive Communication</strong><small>Prof. James Flores · Lecture</small></div><span class="room">Room 105</span></div></div></div></section>
+    <section class="section-view" id="grades"><div class="welcome"><div><div class="eyebrow">ACADEMIC RECORD</div><h1>My Grades</h1><p>Review your sample subject grades and academic standing.</p></div></div><div class="panel"><div class="panel-head"><h3>1st Semester · AY 2026–2027</h3><span class="date-chip">GPA: 1.75</span></div><div class="grade-list">
+      <div class="grade-item"><strong>Introduction to Computing</strong><span>1.50</span><div class="track"><div class="fill" style="width:92%"></div></div></div><div class="grade-item"><strong>Mathematics in the Modern World</strong><span>1.75</span><div class="track"><div class="fill" style="width:87%"></div></div></div><div class="grade-item"><strong>Human-Computer Interaction</strong><span>1.50</span><div class="track"><div class="fill" style="width:94%"></div></div></div><div class="grade-item"><strong>Purposive Communication</strong><span>2.00</span><div class="track"><div class="fill" style="width:83%"></div></div></div><div class="grade-item"><strong>Physical Education</strong><span>1.75</span><div class="track"><div class="fill" style="width:88%"></div></div></div><div class="grade-item"><strong>National Service Training Program</strong><span>1.50</span><div class="track"><div class="fill" style="width:95%"></div></div></div></div><p class="grade-foot">All student details and grades shown are fictional sample data.</p></div></section>
+    <section class="section-view" id="announcements"><div class="welcome"><div><div class="eyebrow">CAMPUS UPDATES</div><h1>Announcements</h1><p>Stay informed about important school activities.</p></div></div><div class="panel"><div class="announcement"><div class="ann-icon">📢</div><div class="ann-text"><strong>Midterm Examination Schedule</strong><p>Check the updated examination timetable on the student portal. Please review your subject schedules and arrive early on examination days.</p><small>November 24, 2026</small></div></div><div class="announcement"><div class="ann-icon">📚</div><div class="ann-text"><strong>Library Week Activities</strong><p>Join the activities and workshops happening this week. Students are encouraged to participate and visit the library information desk.</p><small>November 22, 2026</small></div></div><div class="announcement"><div class="ann-icon">🎓</div><div class="ann-text"><strong>Scholarship Application</strong><p>Applications for the next term are now open. Kindly prepare the required documents and coordinate with the scholarship office.</p><small>November 20, 2026</small></div></div><div class="announcement"><div class="ann-icon">🧹</div><div class="ann-text"><strong>Campus Clean-Up Drive</strong><p>Student volunteers are invited to join the campus clean-up activity this Friday.</p><small>November 18, 2026</small></div></div></div></section>
+    <section class="section-view" id="profile"><div class="welcome"><div><div class="eyebrow">STUDENT INFORMATION</div><h1>Student Profile</h1><p>Your basic student information.</p></div></div><div class="panel"><div class="profile-top"><div class="avatar" style="width:58px;height:58px;font-size:17px">AM</div><div><h3 style="margin:0 0 5px;font:700 17px Manrope">Alex Morgan</h3><span style="font-size:12px;color:var(--muted)">BS Information Technology · 2nd Year</span></div></div><div class="profile-details" style="color:var(--ink);max-width:600px"><div><span style="color:var(--muted)">STUDENT ID</span><strong>2026-10428</strong></div><div><span style="color:var(--muted)">SECTION</span><strong>BSIT-2A</strong></div><div><span style="color:var(--muted)">EMAIL</span><strong>alex.morgan@example.edu</strong></div><div><span style="color:var(--muted)">STATUS</span><strong>Regular</strong></div><div><span style="color:var(--muted)">ACADEMIC YEAR</span><strong>2026–2027</strong></div><div><span style="color:var(--muted)">SEMESTER</span><strong>1st Semester</strong></div></div><p class="grade-foot">This is a sample profile using fictional student information.</p></div></section>
+  </main>
+</div>
+<script>
+  const pages = ['dashboard','schedule','grades','announcements','profile'];
+  const labels = {dashboard:'Dashboard',schedule:'Class Schedule',grades:'My Grades',announcements:'Announcements',profile:'Student Profile'};
+  function showPage(page){
+    if(!pages.includes(page)) return;
+    document.querySelectorAll('.section-view').forEach(s=>s.classList.toggle('active',s.id===page));
+    document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
+    document.getElementById('crumbPage').textContent=labels[page];
+    document.getElementById('sidebar').classList.remove('open');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
+  document.querySelectorAll('[data-goto]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.goto)));
+  document.getElementById('menuBtn').addEventListener('click',()=>document.getElementById('sidebar').classList.toggle('open'));
+  document.getElementById('noticeBtn').addEventListener('click',()=>{showPage('announcements');});
+  document.getElementById('helpBtn').addEventListener('click',()=>alert('For assistance, please contact the Student Services Office.'));
+  document.getElementById('searchInput').addEventListener('keydown',e=>{
+    if(e.key==='Enter'){
+      const q=e.target.value.toLowerCase();
+      const match=pages.find(p=>labels[p].toLowerCase().includes(q));
+      if(match) showPage(match); else alert('No matching portal section found. Try schedule, grades, announcements, or profile.');
+    }
+  });
+</script>
+</body>
+</html>
